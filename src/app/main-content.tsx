@@ -32,6 +32,8 @@ interface MainContentProps {
 
 export function MainContent({ user, project }: MainContentProps) {
   const [activeView, setActiveView] = useState<"preview" | "code">("preview");
+  
+  console.log('MainContent rendered with activeView:', activeView);
 
   return (
     <FileSystemProvider initialData={project?.data}>
@@ -60,11 +62,16 @@ export function MainContent({ user, project }: MainContentProps) {
               <div className="h-full flex flex-col bg-white">
                 {/* Top Bar */}
                 <div className="h-14 border-b border-neutral-200/60 px-6 flex items-center justify-between bg-neutral-50/50">
+                  {/* Debug indicator */}
+                  <div className="text-xs text-gray-500 mr-2">Current: {activeView}</div>
                   <Tabs
                     value={activeView}
-                    onValueChange={(v) =>
-                      setActiveView(v as "preview" | "code")
-                    }
+                    onValueChange={(v) => {
+                      console.log('Tab change requested:', v);
+                      if (v === "preview" || v === "code") {
+                        setActiveView(v);
+                      }
+                    }}
                   >
                     <TabsList className="bg-white/60 border border-neutral-200/60 p-0.5 h-9 shadow-sm">
                       <TabsTrigger value="preview" className="data-[state=active]:bg-white data-[state=active]:text-neutral-900 data-[state=active]:shadow-sm text-neutral-600 px-4 py-1.5 text-sm font-medium transition-all">Preview</TabsTrigger>
